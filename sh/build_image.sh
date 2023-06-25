@@ -1,4 +1,5 @@
 o '=====开始mvn clean====='
+cd ..
 mvn clean
 
 echo '=====开始mvn install&&package====='

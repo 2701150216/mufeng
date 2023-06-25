@@ -1,6 +1,6 @@
 o '=====结束运行====='
 
-cd docker-compose
+cd ../doc/docker-compose
 
 echo '=====结束运行mogu_gateway====='
 

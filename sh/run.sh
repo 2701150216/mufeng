@@ -1,6 +1,6 @@
 o '=====开始运行后台====='
 
-cd docker-compose
+cd ../doc/docker-compose
 
 
 echo '=====开始运行mogu_gateway====='
