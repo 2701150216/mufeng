@@ -6,7 +6,6 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.mail.MessagingException;
 import java.util.Map;
 
 /**
@@ -22,11 +21,11 @@ public class MailListener {
     @Autowired
     private SendMailUtils sendMailUtils;
 
-
     @RabbitListener(queues = "mogu.email")
     public void sendMail(Map<String, String> map) {
         if (map != null) {
             sendMailUtils.sendEmail(
+                    map.get("subject"),
                     map.get("receiver"),
                     map.get("text")
             );

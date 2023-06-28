@@ -7,11 +7,13 @@
 
     <div class="pagebg ab"></div>
     <div class="container">
-      <h1 class="t_nav">
-        <span>你，我生命中一个重要的过客，我们之所以是过客，因为你未曾会为我停留。</span>
-        <a href="/" class="n1">网站首页</a>
-        <a href="/" class="n2">关于我</a>
-      </h1>
+
+<!--      <h1 class="t_nav">-->
+<!--        <span>你，我生命中一个重要的过客，我们之所以是过客，因为你未曾会为我停留。</span>-->
+<!--        <a href="/" class="n1">网站首页</a>-->
+<!--        <a href="/" class="n2">关于我</a>-->
+<!--      </h1>-->
+
       <div class="news_infos">
         <div
           class="news_con fixck newsview ck-content"
@@ -30,7 +32,7 @@
             v-if="openComment == '1'"
           ></CommentBox>
         <div class="message_infos" v-if="openComment == '1'">
-          <CommentList :comments="comments" :commentInfo="commentInfo"></CommentList>
+          <CommentList :comments="comments" :commentInfo="commentInfo"  :maxReplyLevel="4"></CommentList>
           <div class="noComment" v-if="comments.length ==0">还没有评论，快来抢沙发吧！</div>
         </div>
 
@@ -215,7 +217,7 @@
     vertical-align: middle;
   }
   .emoji-size-large {
-    zoom: 0.5; // emojipanel表情大小
+    zoom: 0.5; /* emojipanel表情大小 */
     margin: 5px;
   }
   .news_infos .newsview img {

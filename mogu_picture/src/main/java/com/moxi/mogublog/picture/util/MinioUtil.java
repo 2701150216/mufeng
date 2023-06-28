@@ -5,9 +5,8 @@ import com.moxi.mogublog.picture.global.MessageConf;
 import com.moxi.mogublog.utils.FileUtils;
 import com.moxi.mogublog.utils.ResultUtil;
 import com.moxi.mougblog.base.global.Constants;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
-import io.minio.RemoveObjectArgs;
+import io.minio.*;
+import io.minio.messages.DeleteObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -66,7 +66,8 @@ public class MinioUtil {
         try {
             // 获取系统配置
             SystemConfig systemConfig = feignUtil.getSystemConfig();
-            MinioClient minioClient = new MinioClient(systemConfig.getMinioEndPoint(), systemConfig.getMinioAccessKey(), systemConfig.getMinioSecretKey());
+            MinioClient minioClient = MinioClient.builder().endpoint(systemConfig.getMinioEndPoint()).credentials(systemConfig.getMinioAccessKey(), systemConfig.getMinioSecretKey()).build();
+
             // Remove object.
             minioClient.removeObject(
                     RemoveObjectArgs.builder().bucket(systemConfig.getMinioBucket()).object(fileName).build());
@@ -86,12 +87,13 @@ public class MinioUtil {
     public String deleteBatchFile(List<String> fileNameList) {
         // 获取系统配置
         SystemConfig systemConfig = feignUtil.getSystemConfig();
-        MinioClient minioClient = new MinioClient(systemConfig.getMinioEndPoint(), systemConfig.getMinioAccessKey(), systemConfig.getMinioSecretKey());
+        MinioClient minioClient = MinioClient.builder().endpoint(systemConfig.getMinioEndPoint()).credentials(systemConfig.getMinioAccessKey(), systemConfig.getMinioSecretKey()).build();
         try {
+            List<DeleteObject> objects = new LinkedList<>();
             for (String fileName : fileNameList) {
-                minioClient.removeObject(
-                        RemoveObjectArgs.builder().bucket(systemConfig.getMinioBucket()).object(fileName).build());
+                objects.add(new DeleteObject(fileName));
             }
+            minioClient.removeObjects(RemoveObjectsArgs.builder().bucket(systemConfig.getMinioBucket()).objects(objects).build());
         } catch (Exception e) {
             log.error("批量删除文件失败, 错误消息: {}", e.getMessage());
             return ResultUtil.errorWithData(MessageConf.DELETE_DEFAULT_ERROR);
@@ -111,7 +113,7 @@ public class MinioUtil {
         try {
             // 使用MinIO服务的URL，端口，Access key和Secret key创建一个MinioClient对象
             SystemConfig systemConfig = feignUtil.getSystemConfig();
-            MinioClient minioClient = new MinioClient(systemConfig.getMinioEndPoint(), systemConfig.getMinioAccessKey(), systemConfig.getMinioSecretKey());
+            MinioClient minioClient = MinioClient.builder().endpoint(systemConfig.getMinioEndPoint()).credentials(systemConfig.getMinioAccessKey(), systemConfig.getMinioSecretKey()).build();
             String oldName = multipartFile.getOriginalFilename();
             //获取扩展名，默认是jpg
             String picExpandedName = FileUtils.getPicExpandedName(oldName);

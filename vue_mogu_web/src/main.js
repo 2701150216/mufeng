@@ -16,7 +16,7 @@ import "@/assets/iconfont/iconfont.css";
 import '../static/css/ckeditor.css';
 import '../static/css/index.css';
 Vue.config.productionTip = false
-
+import './permission' // permission control
 
 import xss from 'xss'
 // 定义全局XSS解决方法
@@ -27,6 +27,9 @@ Object.defineProperty(Vue.prototype, '$xss', {
 // 引入全局工具类
 import prototype from './utils/prototype'
 Vue.use(prototype)
+
+import MetaInfo from 'vue-meta'
+Vue.use(MetaInfo)
 
 Vue.directive('highlight', function (el) {
   let blocks = el.querySelectorAll('pre code');

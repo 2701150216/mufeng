@@ -97,7 +97,7 @@
 				console.log(this.userInfo.gender)
 			},
 			RadioChange(e) {	
-				this.userInfo.gender = e.detail.value
+				this.userInfo.startEmailNotification = e.detail.value
 				console.log(this.userInfo.gender)
 			},
 			ChooseImage() {
@@ -160,7 +160,7 @@
 				  } else {
 					uni.showToast({
 						icon: "none",
-						title: response.data,
+						title: response.message,
 					})
 				  }
 				});

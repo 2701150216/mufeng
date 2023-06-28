@@ -6,9 +6,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.moxi.mogublog.commons.entity.Link;
 import com.moxi.mogublog.commons.feign.PictureFeignClient;
 import com.moxi.mogublog.utils.CheckUtils;
+import com.moxi.mogublog.utils.RedisUtil;
 import com.moxi.mogublog.utils.ResultUtil;
 import com.moxi.mogublog.utils.StringUtils;
 import com.moxi.mogublog.xo.global.MessageConf;
+import com.moxi.mogublog.xo.global.RedisConf;
 import com.moxi.mogublog.xo.global.SQLConf;
 import com.moxi.mogublog.xo.global.SysConf;
 import com.moxi.mogublog.xo.mapper.LinkMapper;
@@ -48,6 +50,8 @@ public class LinkServiceImpl extends SuperServiceImpl<LinkMapper, Link> implemen
     private WebUtil webUtil;
     @Autowired
     private RabbitMqUtil rabbitMqUtil;
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Override
     public List<Link> getListByPageSize(Integer pageSize) {
@@ -71,11 +75,19 @@ public class LinkServiceImpl extends SuperServiceImpl<LinkMapper, Link> implemen
         if (linkVO.getLinkStatus() != null) {
             queryWrapper.eq(SQLConf.LINK_STATUS, linkVO.getLinkStatus());
         }
+        if(StringUtils.isNotEmpty(linkVO.getOrderByAscColumn())) {
+            String column = StringUtils.underLine(new StringBuffer(linkVO.getOrderByAscColumn())).toString();
+            queryWrapper.orderByAsc(column);
+        }else if(StringUtils.isNotEmpty(linkVO.getOrderByDescColumn())) {
+            String column = StringUtils.underLine(new StringBuffer(linkVO.getOrderByDescColumn())).toString();
+            queryWrapper.orderByDesc(column);
+        } else {
+            queryWrapper.orderByDesc(SQLConf.SORT);
+        }
         Page<Link> page = new Page<>();
         page.setCurrent(linkVO.getCurrentPage());
         page.setSize(linkVO.getPageSize());
         queryWrapper.eq(SQLConf.STATUS, EStatus.ENABLE);
-        queryWrapper.orderByDesc(SQLConf.SORT);
         IPage<Link> pageList = linkService.page(page, queryWrapper);
         List<Link> linkList = pageList.getRecords();
         final StringBuffer fileUids = new StringBuffer();
@@ -132,6 +144,9 @@ public class LinkServiceImpl extends SuperServiceImpl<LinkMapper, Link> implemen
             rabbitMqUtil.sendSimpleEmail(link.getEmail(), linkApplyText);
         }
 
+        // 删除Redis中的BLOG_LINK
+        deleteRedisBlogLinkList();
+
         return ResultUtil.successWithMessage(MessageConf.INSERT_SUCCESS);
     }
 
@@ -158,6 +173,9 @@ public class LinkServiceImpl extends SuperServiceImpl<LinkMapper, Link> implemen
             }
         }
 
+        // 删除Redis中的BLOG_LINK
+        deleteRedisBlogLinkList();
+
         return ResultUtil.successWithMessage(MessageConf.UPDATE_SUCCESS);
     }
 
@@ -167,6 +185,10 @@ public class LinkServiceImpl extends SuperServiceImpl<LinkMapper, Link> implemen
         link.setStatus(EStatus.DISABLED);
         link.setUpdateTime(new Date());
         link.updateById();
+
+        // 删除Redis中的BLOG_LINK
+        deleteRedisBlogLinkList();
+
         return ResultUtil.successWithMessage(MessageConf.DELETE_SUCCESS);
     }
 
@@ -192,6 +214,8 @@ public class LinkServiceImpl extends SuperServiceImpl<LinkMapper, Link> implemen
         link.setSort(sortCount);
         link.setUpdateTime(new Date());
         link.updateById();
+        // 删除Redis中的BLOG_LINK
+        deleteRedisBlogLinkList();
         return ResultUtil.successWithMessage(MessageConf.OPERATION_SUCCESS);
     }
 
@@ -209,5 +233,14 @@ public class LinkServiceImpl extends SuperServiceImpl<LinkMapper, Link> implemen
             return ResultUtil.errorWithMessage(MessageConf.PARAM_INCORRECT);
         }
         return ResultUtil.successWithMessage(MessageConf.UPDATE_SUCCESS);
+    }
+
+    /**
+     * 删除Redis中的友链列表
+     */
+    private void deleteRedisBlogLinkList() {
+        // 删除Redis中的BLOG_LINK
+        Set<String> keys = redisUtil.keys(RedisConf.BLOG_LINK + Constants.SYMBOL_COLON + "*");
+        redisUtil.delete(keys);
     }
 }
