@@ -30,3 +30,4 @@
 /webapps/
 
 /logs/
+/doc/docker-compose/data/
