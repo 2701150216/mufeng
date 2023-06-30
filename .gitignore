@@ -31,3 +31,4 @@
 
 /logs/
 /doc/docker-compose/data/
+/doc/docker-compose/log/
