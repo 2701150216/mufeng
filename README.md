@@ -129,12 +129,12 @@
 
 ## 项目中初始用户和密码
 
-- **后台登录**：用户：admin，密码：mogu2018
-- 前台登录：用户：mogu2018，密码：mogu2018
-- **Mysql**：用户：root，密码：mogu2018
-- **Redis**：密码：mogu2018
-- **远程SSH初始密码**：用户：root，密码：mogu2018
-- **RabbitMQ管理页面：** 用户：admin，密码：mogu2018
+- **后台登录**：用户：admin，密码：mufeng2023
+- 前台登录：用户：mufeng2023，密码：mufeng2023
+- **Mysql**：用户：root，密码：mufeng2023
+- **Redis**：密码：mufeng2023
+- **远程SSH初始密码**：用户：root，密码：mufeng2023
+- **RabbitMQ管理页面：** 用户：admin，密码：mufeng2023
 - **Nacos管理页面：** 用户：nacos，密码：nacos
 - **Sentinel管理页面：** 用户：sentinel，密码：sentinel
 - **蘑菇博客监控页面**：用户：user，密码：password123
