@@ -1,4 +1,4 @@
-name: Master-Build-Docker-Images
+name: vue_mogu_web-Build-Docker-Images
 
 #on:
 #  push:

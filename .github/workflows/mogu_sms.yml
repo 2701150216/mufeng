@@ -1,4 +1,4 @@
-name: Master-Build-Docker-Images
+name: mogu_sms-Build-Docker-Images
 
 #on:
 #  push:
