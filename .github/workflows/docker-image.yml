@@ -8,8 +8,8 @@ name: Master-Build-Docker-Images
 
 on:
   push:
-    branches:
-      - main
+    tag:
+      - 'v*.*.*'
 
 jobs:
   push:
