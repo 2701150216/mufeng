@@ -8,8 +8,8 @@ services:
       - "9000:9000"
       - "9001:9001"
     environment:
-      - "MINIO_ACCESS_KEY=mogu2018"
-      - "MINIO_SECRET_KEY=mogu2018"
+      - "MINIO_ACCESS_KEY=mufeng2023"
+      - "MINIO_SECRET_KEY=mufeng2023"
     command: 
       server /data
       --console-address ":9001"
