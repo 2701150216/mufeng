@@ -5,3 +5,7 @@
 spring:
   profiles:
     active: dev
+log:
+  thread:
+    corePoolSize: 2
+    maxPoolSize: 10
