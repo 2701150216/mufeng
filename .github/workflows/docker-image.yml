@@ -6,10 +6,15 @@ name: tag-Build-Docker-Images
 #    tags:
 #      - v*
 
+#on:
+#  push:
+#    tag:
+#      - 'v*.*.*'
+
 on:
-  push:
-    tag:
-      - 'v*.*.*'
+  release:
+    types:
+      - published
 
 jobs:
   push:
