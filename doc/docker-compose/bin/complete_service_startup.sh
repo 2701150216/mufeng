@@ -4,6 +4,9 @@ echo '======================'
 echo '=====开始运行后台====='
 echo '======================'
 
+echo '=====登录镜像仓库====='
+docker login --username=aliyun0793204173 registry.cn-beijing.aliyuncs.com
+
 echo '=====开始运行mogu_monitor====='
 docker-compose -f ../yaml/mogu_gateway.yml up -d
 
