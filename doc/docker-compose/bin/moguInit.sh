@@ -64,25 +64,25 @@ else
     echo 'docker 已安装';
 fi
 
-echo "############判断是否安装了wget##############"
-if ! type wget >/dev/null 2>&1; then
-    echo 'wget 未安装';
-	echo '开始安装wget....';	
-	yum -y install wget
-	
-else
-    echo 'wget 已安装';
-fi
+#echo "############判断是否安装了wget##############"
+#if ! type wget >/dev/null 2>&1; then
+#    echo 'wget 未安装';
+#	echo '开始安装wget....';
+#	yum -y install wget
+#
+#else
+#    echo 'wget 已安装';
+#fi
 
-echo "############判断是否安装了dos2unix##############"
-if ! type dos2unix >/dev/null 2>&1; then
-    echo 'dos2unix 未安装';
-	echo '开始安装dos2unix....';	
-	yum -y install dos2unix*
-	
-else
-    echo 'dos2unix 已安装';
-fi
+#echo "############判断是否安装了dos2unix##############"
+#if ! type dos2unix >/dev/null 2>&1; then
+#    echo 'dos2unix 未安装';
+#	echo '开始安装dos2unix....';
+#	yum -y install dos2unix*
+#
+#else
+#    echo 'dos2unix 已安装';
+#fi
 
 echo "############判断是否安装了docker-compose##############"
 if ! type docker-compose >/dev/null 2>&1; then
@@ -99,50 +99,50 @@ else
 fi
 
 
-echo "############判断是否安装了unzip解压##############"
-if ! type unzip >/dev/null 2>&1; then
-    echo 'unzip 未安装';
-	echo '开始安装unzip....';	
-	yum -y install unzip
-	
-else
-    echo 'unzip 已安装';
-fi
+#echo "############判断是否安装了unzip解压##############"
+#if ! type unzip >/dev/null 2>&1; then
+#    echo 'unzip 未安装';
+#	echo '开始安装unzip....';
+#	yum -y install unzip
+#
+#else
+#    echo 'unzip 已安装';
+#fi
 
 
 echo '创建docker网络';
 docker network create mogu
 
-echo '正在拉取一键部署脚本';
-wget http://oss.moguit.cn/script//docker-compose.zip
-
-
-unzip docker-compose.zip
-rm -rf docker-compose.zip
-
-# 进入目录
-cd docker-compose
-# 添加执行权限
-chmod +x bin/kernStartup.sh
-chmod +x bin/kernShutdown.sh
-chmod +x bin/mouGoStartup.sh
-chmod +x bin/mouGoShutdown.sh
-chmod +x bin/update.sh
-chmod +x bin/wait-for-it.sh
-
-# 进入到bin目录
-cd bin
-
-# 修改编码
-echo "修改编码...."
-dos2unix kernStartup.sh
-dos2unix kernShutdown.sh
-dos2unix moguGoStartup.sh
-dos2unix moguGoShutdown.sh
-dos2unix update.sh
-dos2unix wait-for-it.sh
+#echo '正在拉取一键部署脚本';
+#wget http://oss.moguit.cn/script//docker-compose.zip
+#
+#
+#unzip docker-compose.zip
+#rm -rf docker-compose.zip
+#
+## 进入目录
+#cd docker-compose
+## 添加执行权限
+#chmod +x bin/kernStartup.sh
+#chmod +x bin/kernShutdown.sh
+#chmod +x bin/mouGoStartup.sh
+#chmod +x bin/mouGoShutdown.sh
+#chmod +x bin/update.sh
+#chmod +x bin/wait-for-it.sh
+#
+## 进入到bin目录
+#cd bin
+#
+## 修改编码
+#echo "修改编码...."
+#dos2unix kernStartup.sh
+#dos2unix kernShutdown.sh
+#dos2unix moguGoStartup.sh
+#dos2unix moguGoShutdown.sh
+#dos2unix update.sh
+#dos2unix wait-for-it.sh
 
 # 执行脚本
 python2 replaceIp.py
 
-sh kernStartup.sh
+sh completeStartup.sh
