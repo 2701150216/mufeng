@@ -145,4 +145,7 @@ docker network create mogu
 # 执行脚本
 python2 replaceIp.py
 
+echo '=====登录镜像仓库====='
+docker login --username=aliyun0793204173 registry.cn-beijing.aliyuncs.com
+
 sh completeStartup.sh
