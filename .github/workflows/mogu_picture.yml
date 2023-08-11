@@ -43,20 +43,6 @@ jobs:
           echo '=====开始mvn install&&package====='
           mvn install -DskipTests=true && mvn package -DskipTests=true
 
-      - name: Build vue_mogu_admin and vue_mogu_web
-        run: |
-          echo '=====开始安装Vue_mogu_admin依赖====='
-          cd ./vue_mogu_admin
-          npm install
-          npm run build
-          cd ..
-
-          echo '=====开始安装Vue_mogu_web依赖====='
-          cd ./vue_mogu_web
-          npm install
-          npm run build
-          cd ..
-
       # 登录到 阿里云镜像服务，使用 GitHub secrets 传入账号密码，密码被加密存储在 GitHub 服务器
       - name: Login to Aliyun
         uses: docker/login-action@v1
