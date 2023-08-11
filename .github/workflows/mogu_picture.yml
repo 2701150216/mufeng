@@ -11,7 +11,7 @@ name: mogu_picture-Build-Docker-Images
 #    branches:
 #      - main
 #    paths:
-#      - '../../mogu_picture/*'
+#      - '/mogu_picture/**'
 
 on:
   push:
