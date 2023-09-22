@@ -1,4 +1,4 @@
-package com.moxi.mogublog.utils.backup;
+package com.moxi.mogublog.admin.task.backup;
 
 import com.qiniu.common.Zone;
 import com.qiniu.storage.BucketManager;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 @Component
 @Slf4j
-public class BackUp {
+public class SqlBackUp {
 
     static String uploadToken = null;//牛哥的上传令牌
     static String bakZipFilePath = null;// 压缩的备份文件全路径
