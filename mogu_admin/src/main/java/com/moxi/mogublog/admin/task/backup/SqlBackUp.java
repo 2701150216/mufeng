@@ -41,7 +41,7 @@ public class SqlBackUp {
         try {
             auth = Auth.create("XHDYw0p1ilTDqoSg3nJKepOMQ5Dne8CJe33tn5J3", "PUc9u3LOF5FGlBINPd5L2Dnohi1Uj8_dosllkGMP");
             uploadToken = auth.uploadToken("mufengobs");
-            bakRootPath = isWindows() ? "D:\\tmp" : "./tmp";
+            bakRootPath = isWindows() ? "D:\\tmp" : "./tmp/mysql_backup";
         } catch (Exception e) {
             e.printStackTrace();
         }
