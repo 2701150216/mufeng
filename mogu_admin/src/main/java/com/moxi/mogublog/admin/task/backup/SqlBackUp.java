@@ -41,7 +41,7 @@ public class SqlBackUp {
         try {
             auth = Auth.create("XHDYw0p1ilTDqoSg3nJKepOMQ5Dne8CJe33tn5J3", "PUc9u3LOF5FGlBINPd5L2Dnohi1Uj8_dosllkGMP");
             uploadToken = auth.uploadToken("mufengobs");
-            bakRootPath = isWindows() ? "D:\\tmp" : "/tmp/mysql_backup";
+            bakRootPath = isWindows() ? "D:\\tmp\\mysql_backup" : "/tmp/mysql_backup";
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -128,7 +128,7 @@ public class SqlBackUp {
         // 7牛备份文件路径后缀
         fileName7qZip = "mysqlBackup" + "/" + fileTmp + ".zip";
         // 本地zip备份文件路径
-        bakZipFilePath = bakRootPath + File.separator + "mysqlBackup" + File.separator + fileTmp + ".zip";
+        bakZipFilePath = bakRootPath + File.separator + fileTmp + ".zip";
         // 本地sql文件临时路径
         final String fileSqlPathTmp = bakRootPath + File.separator + fileTmp + ".sql";
         try {
