@@ -58,6 +58,6 @@ jobs:
           echo '=====开始上传镜像====='
 
           echo '=====开始上传vue_mogu_web====='
-          docker push registry.cn-beijing.aliyuncs.com/mufeng_blog/vue_mogu_web
+          docker push registry.cn-beijing.aliyuncs.com/mufeng_blog/mogu_web
 
           echo '=====镜像上传结束====='
