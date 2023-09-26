@@ -17,10 +17,7 @@ import org.springframework.stereotype.Component;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -78,8 +75,10 @@ public class SqlBackUp {
                 }
 
                 UploadManager uploadManager = new UploadManager(cfg);
-                uploadManager.put(new File(bakZipFilePath), fileName7qZip, uploadToken);
-                log.info("7牛云上传成功：{}", fileName7qZip);
+                if (!isWindows()) {
+                    uploadManager.put(new File(bakZipFilePath), fileName7qZip, uploadToken);
+                    log.info("7牛云上传成功：{}", fileName7qZip);
+                }
 
                 bakZipFilePath = null;
                 //删除7牛上前30份的备份
@@ -92,7 +91,7 @@ public class SqlBackUp {
                     FileListing fileListing = bucketManager.listFilesV2(bucket, prefix, "", limit, delimiter);
 
                     Map<Long, String> map = Arrays.stream(fileListing.items).collect(Collectors.toMap(fileInfo -> fileInfo.putTime, fileInfo -> fileInfo.key));
-                    map.keySet().stream().sorted().limit(30).forEach(map::remove);
+                    map.keySet().stream().sorted(Comparator.reverseOrder()).limit(30).forEach(map::remove);
                     List<String> expireList = new ArrayList<>(map.values());
                     if (!expireList.isEmpty()) {
                         for (String fileName : expireList) {
