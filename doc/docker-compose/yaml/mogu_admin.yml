@@ -7,6 +7,7 @@ services:
     restart: always
     ports:
       - 8601:8601
+      - 8082:8082
     networks:
       - mogu
     environment:
@@ -14,6 +15,7 @@ services:
     volumes:
       - ../log/:/logs/
       - ../config/mogu_admin/:/config/
+      - ../mysql_backup:/tmp/mysql_backup/
 networks:
   mogu:
     external: true
