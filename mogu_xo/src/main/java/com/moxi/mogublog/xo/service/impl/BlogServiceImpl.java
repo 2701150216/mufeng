@@ -1,5 +1,8 @@
 package com.moxi.mogublog.xo.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -26,8 +29,13 @@ import com.moxi.mougblog.base.serviceImpl.SuperServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.client.reactive.ClientHttpConnector;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+import reactor.netty.http.client.HttpClient;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -48,6 +56,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class BlogServiceImpl extends SuperServiceImpl<BlogMapper, Blog> implements BlogService {
 
+    public static final String IMG_URL_API = "https://api.btstu.cn/sjbz/api.php?lx=suiji&format=json";
     @Autowired
     private WebUtil webUtil;
     @Autowired
@@ -910,6 +919,29 @@ public class BlogServiceImpl extends SuperServiceImpl<BlogMapper, Blog> implemen
             commentService.batchDeleteCommentByBlogUid(uidList);
         }
         return ResultUtil.successWithMessage(MessageConf.DELETE_SUCCESS);
+    }
+
+    @Override
+    public String randomImg() {
+        //文章封面图片 由https://api.btstu.cn/该网站随机获取
+        HttpClient httpClient = HttpClient.create();
+        ClientHttpConnector connector = new ReactorClientHttpConnector(httpClient);
+
+        WebClient webClient = WebClient.builder()
+                .baseUrl(IMG_URL_API)
+                .clientConnector(connector)
+                .build();
+
+        Mono<String> result = webClient.get()
+                .uri(IMG_URL_API)
+                .retrieve()
+                .bodyToMono(String.class);
+        JSONObject jsonObject = JSON.parseObject(result.block());
+        Object imgUrl = jsonObject.get("imgurl");
+        if (ObjectUtil.isNotEmpty(imgUrl)) {
+            return ResultUtil.successWithData(imgUrl);
+        }
+        return ResultUtil.errorWithMessage(MessageConf.GET_PICTURE_FAILED);
     }
 
     @Override

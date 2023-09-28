@@ -56,3 +56,11 @@ export function deleteBatchBlog(params) {
     data: params
   })
 }
+
+export function randomImg() {
+  return request({
+    url: process.env.ADMIN_API + '/blog/randomImg',
+    method: 'get',
+    params:{}
+  })
+}

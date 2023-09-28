@@ -26,6 +26,7 @@ public class BaseMessageConf {
     public static final String PLEASE_SET_LOCAL = "请先配置本地图片域名";
     public static final String PICTURE_UID_IS_NULL = "图片UID不能为空";
 
+    public static final String GET_PICTURE_FAILED = "获取图片失败";
     public static final String KEYWORD_IS_NOT_EMPTY = "关键字不能为空";
 
     public static final String COMMENT_IS_NOT_EXIST = "该评论不存在";

@@ -166,6 +166,13 @@ public interface BlogService extends SuperService<Blog> {
     public String deleteBatchBlog(List<BlogVO> blogVoList);
 
     /**
+     * 批量删除博客
+     *
+     * @return
+     */
+    public String randomImg();
+
+    /**
      * 本地博客上传
      *
      * @param filedatas

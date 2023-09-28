@@ -18,10 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -108,6 +105,13 @@ public class BlogRestApi {
     @PostMapping("/deleteBatch")
     public String deleteBatch(@RequestBody List<BlogVO> blogVoList) {
         return blogService.deleteBatchBlog(blogVoList);
+    }
+
+
+    @GetMapping(value = "/randomImg")
+    @ApiOperation(value = "随机获取一张图片", httpMethod = "GET", response = String.class, notes = "随机获取一张图片")
+    public String randomImg() {
+        return blogService.randomImg();
     }
 
 }

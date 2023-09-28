@@ -10,14 +10,14 @@
 # 0 3 * * * /root/mysql_backup.sh
 #/etc/cron.daily
 
-db_user="backup"
-db_password="8H2QQQBEypp"
-db_host="localhost"
+db_user="root"
+db_password="mufeng2023"
+db_host="111.230.32.175"
 # the directory for story your backup file.  #
 backup_dir="/home/backup/mysql/"
 # 要备份的数据库名 #
 #all_db="$(${mysql} -u ${db_user} -h ${db_host} -p${db_password} -Bse 'show databases')" #
-all_db="dbname"
+all_db="mogu_blog mogu_blog mogu_picture nacos_config zipkin"
 
 # 要保留的备份天数 #
 backup_day=10
@@ -36,14 +36,13 @@ clientPath="/home/backup/mysql"
 ###定义要镜像的本地文件目录路径 源服务器（必须是绝对路径）###
 serverPath=${backup_dir}
 ###定义生产环境的ip###
-web_ip="192.168.0.2"
+web_ip="38.147.172.34"
 
 # date format for backup file (dd-mm-yyyy)  #
 time="$(date +"%Y-%m-%d")"
 
 # mysql, ${mysqldump} and some other bin's path  #
-mysql="/usr/local/mysql-5.5.33/bin/mysql"
-mysqldump="/usr/local/mysql-5.5.33/bin/mysqldump"
+mysqldump="docker exec -i mysql mysqldump"
 
 # the directory for story the newest backup  #
 test ! -d ${backup_dir} && mkdir -p ${backup_dir}
