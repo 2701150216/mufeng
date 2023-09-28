@@ -27,7 +27,7 @@ jobs:
       - name: Build vue_mogu_admin and vue_mogu_web
         run: |
           echo '=====开始安装Vue_mogu_web依赖====='
-          cd ./vue_mogu_web
+          cd vue_mogu_web
           npm install
           npm run build
           cd ..
