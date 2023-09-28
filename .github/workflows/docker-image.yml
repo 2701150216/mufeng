@@ -12,9 +12,11 @@ name: tag-Build-Docker-Images
 #      - 'v*.*.*'
 
 on:
-  release:
-    types:
-      - published
+  push:
+    branches:
+      - main
+    paths:
+      - 'vue_mogu_admin/**'
 
 jobs:
   push:
