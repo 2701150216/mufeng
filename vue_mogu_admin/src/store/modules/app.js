@@ -7,7 +7,7 @@ const app = {
       withoutAnimation: false
     },
     device: 'desktop',
-    openNotificationDialogVisible: true, // 仪表盘弹框通知
+    openNotificationDialogVisible: false, // 仪表盘弹框通知
     blogForm: {}, // 缓存博客表单信息
   },
   mutations: {
