@@ -11,6 +11,7 @@ import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.util.Zip4jConstants;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +31,8 @@ public class SqlBackUp {
     static Auth auth = null;//牛哥授权
     static String bakRootPath;//备份文件 的根目录
     static Configuration cfg = new Configuration(Zone.zone2());
-
+    @Value(value = "${data.task.backup.sql.num:240}")
+    static int maxFileNum;
     /**
      * 初始化
      */
@@ -52,19 +54,8 @@ public class SqlBackUp {
         return System.getProperty("os.name").toLowerCase().contains("windows");
     }
 
-    public static void main(String[] args) {
-        for (int i = 0; i < 5; i++) {
-            BackUpSql();
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
     @Scheduled(initialDelay = 10 * 1000, fixedDelay = 60 * 60 * 1000)
-    public static void BackUpSql() {
+    public void BackUpSql() {
         init();
         try {
             if (null == uploadToken) {
@@ -91,7 +82,7 @@ public class SqlBackUp {
                     FileListing fileListing = bucketManager.listFilesV2(bucket, prefix, "", limit, delimiter);
 
                     Map<Long, String> map = Arrays.stream(fileListing.items).collect(Collectors.toMap(fileInfo -> fileInfo.putTime, fileInfo -> fileInfo.key));
-                    map.keySet().stream().sorted(Comparator.reverseOrder()).limit(30).forEach(map::remove);
+                    map.keySet().stream().sorted(Comparator.reverseOrder()).limit(maxFileNum).forEach(map::remove);
                     List<String> expireList = new ArrayList<>(map.values());
                     if (!expireList.isEmpty()) {
                         for (String fileName : expireList) {
@@ -211,4 +202,3 @@ public class SqlBackUp {
         }
     }
 }
-
