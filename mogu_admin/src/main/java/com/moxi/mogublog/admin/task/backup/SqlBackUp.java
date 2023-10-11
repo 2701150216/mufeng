@@ -31,8 +31,8 @@ public class SqlBackUp {
     static Auth auth = null;//牛哥授权
     static String bakRootPath;//备份文件 的根目录
     static Configuration cfg = new Configuration(Zone.zone2());
-    @Value(value = "${data.task.backup.sql.num:240}")
-    static int maxFileNum;
+    @Value("${data.task.backup.sql.num:240}")
+    static int maxFileNum = 240;
     /**
      * 初始化
      */
@@ -55,7 +55,7 @@ public class SqlBackUp {
     }
 
     @Scheduled(initialDelay = 10 * 1000, fixedDelay = 60 * 60 * 1000)
-    public void BackUpSql() {
+    public static void BackUpSql() {
         init();
         try {
             if (null == uploadToken) {
